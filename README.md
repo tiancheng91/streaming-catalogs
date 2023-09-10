@@ -1,9 +1,7 @@
 # Stremio Streaming Catalogs 
 
-中文美剧/日剧目录
+streamio 中文美剧/日剧目录  
 
-## install 
-paste 
-```
-https://streaming-catalogs.fly.dev/manifest.json
-```
+[![安装](https://img.shields.io/badge/Install_To_Stremio-blue?style=for-the-badge)](https://app.strem.io/shell-v4.4/#/addons/community/all?addon=https:%2F%2Fstreaming-catalogs.fly.dev%2Fmanifest.json)
+
+
