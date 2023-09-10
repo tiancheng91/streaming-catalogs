@@ -22,8 +22,8 @@ app.set('trust proxy', true)
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'vue', 'dist')));
 
-let movies = {'top': [], 'nfx': [], 'lin': []};
-let series = {'top': [], 'nfx': [], 'lin': []};
+let movies = {top: [], nfx: [], lin: []};
+let series = {top: [], nfx: [], lin: []};
 
 async function loadNewCatalog() {
     console.log('loadNewCatalog');
@@ -40,7 +40,7 @@ async function loadNewCatalog() {
 }
 
 
-app.get('/:configuration/manifest.json', (req, res) => {
+app.get('/manifest.json', (req, res) => {
     res.setHeader('Cache-Control', 'max-age=86400,stale-while-revalidate=86400,stale-if-error=86400,public');
     res.setHeader('content-type', 'application/json');
 
@@ -51,6 +51,7 @@ app.get('/:configuration/manifest.json', (req, res) => {
         {key: "lin", name: "Line"}
     ]
 
+    let catalogs = [];
     selectedProviders.forEach(row => {
         catalogs.push({
             id: row.key,
@@ -69,7 +70,7 @@ app.get('/:configuration/manifest.json', (req, res) => {
         id: 'net.appsvc.streamcategory',
         logo: 'https://play-lh.googleusercontent.com/TBRwjS_qfJCSj1m7zZB93FnpJM5fSpMA_wUlFDLxWAb45T9RmwBvQd5cWR5viJJOhkI',
         version: process.env.npm_package_version,
-        name: 'Streaming Catalogs',
+        name: 'Streaming Catalogs(中文)',
         description: '美剧/日剧榜单',
         catalogs: catalogs,
         resources: ['catalog'],
@@ -78,68 +79,23 @@ app.get('/:configuration/manifest.json', (req, res) => {
     });
 })
 
-app.get('/:configuration?/catalog/:type/:id/:extra?.json', (req, res) => {
+app.get('/catalog/:type/:id/:extra?.json', (req, res) => {
     res.setHeader('Cache-Control', 'max-age=86400,stale-while-revalidate=86400,stale-if-error=86400,public');
     res.setHeader('content-type', 'application/json');
 
     let id = req.params.id;
 
     if (req.params.type === 'movie') {
-        res.send({ metas: addon.replaceRpdbPosters(rpdbKey, movies[id]) });
+        res.send({ metas: movies[id] });
         return;
     }
 
     if (req.params.type === 'series') {
-        res.send({ metas: addon.replaceRpdbPosters(rpdbKey, series[id]) });
+        res.send({ metas: series[id] });
         return;
     }
-})
 
-app.get('/manifest.json', function (req, res) {
-    res.setHeader('Cache-Control', 'max-age=86400,stale-while-revalidate=86400,stale-if-error=86400,public');
-    res.setHeader('content-type', 'application/json');
-
-    res.send({
-        id: 'net.appsvc.streamcategory',
-        logo: 'https://play-lh.googleusercontent.com/TBRwjS_qfJCSj1m7zZB93FnpJM5fSpMA_wUlFDLxWAb45T9RmwBvQd5cWR5viJJOhkI',
-        version: process.env.npm_package_version,
-        name: 'Streaming Catalogs(中文)',
-        description: '美剧/日剧榜单',
-        catalogs: [
-            {
-                id: 'top',
-                type: 'series',
-                name: 'Trending',
-            },
-            {
-                id: 'top',
-                type: 'movie',
-                name: 'Trending',
-            }, {
-                id: 'nfx',
-                type: 'series',
-                name: 'Netflix',
-            },
-            {
-                id: 'nfx',
-                type: 'movie',
-                name: 'Netflix',
-            },
-            {
-                id: 'lin',
-                type: 'series',
-                name: 'Line',
-            },
-            {
-                id: 'lin',
-                type: 'movie',
-                name: 'Line',
-            }
-        ],
-        resources: ['catalog'],
-        types: ['movie', 'series'],
-        idPrefixes: ['tt']
-    });
+    return;
 })
 
 loadNewCatalog();
@@ -148,5 +104,3 @@ setInterval(loadNewCatalog, process.env.REFRESH_INTERVAL || 21600000);
 app.listen(process.env.PORT || 9000, () => {
     console.log('http://127.0.0.1:9000/manifest.json');
 });
-
-module.exports = app;
