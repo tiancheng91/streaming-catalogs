@@ -70,7 +70,7 @@ app.get('/:configuration/manifest.json', (req, res) => {
         logo: 'https://play-lh.googleusercontent.com/TBRwjS_qfJCSj1m7zZB93FnpJM5fSpMA_wUlFDLxWAb45T9RmwBvQd5cWR5viJJOhkI',
         version: process.env.npm_package_version,
         name: 'Streaming Catalogs',
-        description: 'Your favourite streaming services!',
+        description: '美剧/日剧榜单',
         catalogs: catalogs,
         resources: ['catalog'],
         types: ['movie', 'series'],
@@ -138,10 +138,7 @@ app.get('/manifest.json', function (req, res) {
         ],
         resources: ['catalog'],
         types: ['movie', 'series'],
-        idPrefixes: ['tt'],
-        behaviorHints: {
-            configurable: true,
-        }
+        idPrefixes: ['tt']
     });
 })
 
