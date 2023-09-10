@@ -103,8 +103,8 @@ app.get('/manifest.json', function (req, res) {
         id: 'net.appsvc.streamcategory',
         logo: 'https://play-lh.googleusercontent.com/TBRwjS_qfJCSj1m7zZB93FnpJM5fSpMA_wUlFDLxWAb45T9RmwBvQd5cWR5viJJOhkI',
         version: process.env.npm_package_version,
-        name: 'Streaming Catalogs',
-        description: 'Trending movies and series on Netflix, HBO Max, Disney+, Apple TV+ and more. Configure to choose your favourite services.',
+        name: 'Streaming Catalogs(中文)',
+        description: '美剧/日剧榜单',
         catalogs: [
             {
                 id: 'top',
@@ -151,3 +151,5 @@ setInterval(loadNewCatalog, process.env.REFRESH_INTERVAL || 21600000);
 app.listen(process.env.PORT || 9000, () => {
     console.log('http://127.0.0.1:9000/manifest.json');
 });
+
+module.exports = app;
