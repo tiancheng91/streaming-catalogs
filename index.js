@@ -20,19 +20,18 @@ if (process.env.NODE_ENV === 'production') {
 const app = express();
 app.set('trust proxy', true)
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'vue', 'dist')));
 
-let movies = {top: [], nfx: [], lin: []};
-let series = {top: [], nfx: [], lin: []};
+let movies = {trend: [], nfx: [], lin: []};
+let series = {trend: [], nfx: [], lin: []};
 
 async function loadNewCatalog() {
     console.log('loadNewCatalog');
 
-    series.top = await addon.getMetas('SHOW', ['nfx', 'atp', 'hbm'], 'US');
+    series.trend = await addon.getMetas('SHOW', ['nfx', 'atp', 'hbm'], 'US');
     series.nfx = await addon.getMetas('SHOW', ['nfx'], 'US');
     series.lin = await addon.getMetas("SHOW", ['nfx', 'atp', 'lin'], 'JP');
 
-    movies.top = await addon.getMetas('MOVIE', ['nfx', 'atp', 'hbm'], 'US');
+    movies.trend = await addon.getMetas('MOVIE', ['nfx', 'atp', 'hbm'], 'US');
     movies.nfx = await addon.getMetas('MOVIE', ['nfx'], 'US');
     movies.lin = await addon.getMetas("MOVIE", ['nfx', 'atp', 'lin'], 'JP');
 
@@ -46,7 +45,7 @@ app.get('/manifest.json', (req, res) => {
 
     // parse config
     const selectedProviders = [
-        {key: "top", name: "Trending"},
+        {key: "trend", name: "Trending"},
         {key: "nfx", name: "Netflix"},
         {key: "lin", name: "Line"}
     ]
@@ -74,7 +73,7 @@ app.get('/manifest.json', (req, res) => {
         description: '美剧/日剧榜单',
         catalogs: catalogs,
         resources: ['catalog'],
-        types: ['movie', 'series'],
+        types: ['series', 'movie'],
         idPrefixes: ['tt']
     });
 })
